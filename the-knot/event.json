@@ -1,0 +1,93 @@
+{
+  "charity": null,
+  "fianceFirstName": "Bennett",
+  "firstName": "Rachel",
+  "id": "52713613",
+  "isActive": true,
+  "isCashRegistryActive": true,
+  "isDeleted": false,
+  "isHiddenProducts": false,
+  "isHiddenProductsInWebsite": false,
+  "isHiddenRegistriesInWebsite": false,
+  "isHiddenSearchEngines": false,
+  "isManualOverrided": false,
+  "isPrivate": false,
+  "registries": [
+    {
+      "id": "743891586",
+      "registryUuid": "ACC60E20-D59F-11EC-A852-7FCE617B87DD",
+      "registryType": 1,
+      "manualRegistryName": null,
+      "manualRegistryUrl": null,
+      "hiddenCoupleSearch": false,
+      "hiddenWws": false,
+      "isDeleted": false,
+      "retailer": {
+        "id": 12160,
+        "retailerId": 12160,
+        "name": "Target",
+        "retailerName": "Target",
+        "fullLogoImageUrl": "https://media.xogrp.com/images/ebefd61f-fdb1-44d4-bbd5-a5c7d78d9103",
+        "logoUrl": "https://media.xogrp.com/images/ebefd61f-fdb1-44d4-bbd5-a5c7d78d9103",
+        "heroImageUrl": "https://media.xogrp.com/images/1d641b73-eb99-49e7-b9c9-627ee960ddbb",
+        "oneColSortOrder": 19,
+        "guestViewSortOrder": 19,
+        "fourColSortOrder": 12,
+        "creationSortOrder": 12,
+        "isPartner": true,
+        "isDeleted": false
+      }
+    },
+    {
+      "id": "743810908",
+      "registryUuid": "3AC14030-D02A-11EC-8DED-ED62BDCD5CBB",
+      "registryType": 1,
+      "manualRegistryName": null,
+      "manualRegistryUrl": null,
+      "hiddenCoupleSearch": false,
+      "hiddenWws": false,
+      "isDeleted": false,
+      "retailer": {
+        "id": 14020,
+        "retailerId": 14020,
+        "name": "Amazon",
+        "retailerName": "Amazon",
+        "fullLogoImageUrl": "https://media.xogrp.com/images/23cc4056-3c92-48ff-9794-d4f2c4874f3b",
+        "logoUrl": "https://media.xogrp.com/images/23cc4056-3c92-48ff-9794-d4f2c4874f3b",
+        "heroImageUrl": "https://media.xogrp.com/images/db8f86d4-b7f2-4200-aeaa-6bbc5c7a818a",
+        "oneColSortOrder": 2,
+        "guestViewSortOrder": 2,
+        "fourColSortOrder": 5,
+        "creationSortOrder": 5,
+        "isPartner": true,
+        "isDeleted": false
+      }
+    },
+    {
+      "id": "4312E1F0-F51A-48C2-BEA9-B12894A0E9F0",
+      "registryUuid": "4312E1F0-F51A-48C2-BEA9-B12894A0E9F0",
+      "registryType": 3,
+      "hiddenCoupleSearch": false,
+      "hiddenWws": false,
+      "isDeleted": false,
+      "retailer": {
+        "id": 19999,
+        "retailerId": 19999,
+        "name": "The Knot Cash Funds",
+        "retailerName": "The Knot Cash Funds",
+        "fullLogoImageUrl": "https://media.xogrp.com/images/beabd155-bd70-4274-aa01-ac5f8a136b46",
+        "logoUrl": "https://media.xogrp.com/images/beabd155-bd70-4274-aa01-ac5f8a136b46",
+        "heroImageUrl": "",
+        "oneColSortOrder": 20,
+        "guestViewSortOrder": 20,
+        "fourColSortOrder": null,
+        "creationSortOrder": null,
+        "isPartner": true,
+        "isDeleted": false
+      }
+    }
+  ],
+  "stripeAccountStatus": null,
+  "hasTransRegBetaAccess": true,
+  "hasTransactionalRegistry": false
+}
