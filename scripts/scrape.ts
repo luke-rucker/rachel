@@ -7,6 +7,7 @@ type Product = {
   url: string
   image: string
   price: number
+  stillNeeded: number
 }
 
 async function scrape(registryUrl: string) {
@@ -21,12 +22,16 @@ async function scrape(registryUrl: string) {
     const price = product.find('.wedding__text--price')
     const link = product.find('a')
     const image = product.find('img')
+    const stillNeeded = product.find(
+      '.wedding__text.wedding__text--sm.wedding__text--light.registry-asin-card__bottom-left-text'
+    )
 
     scrapedProducts.push({
       name: link.attr('aria-label'),
       url: link.attr('href'),
       image: image.attr('src'),
       price: parsePrice(price),
+      stillNeeded: parseStillNeeded(stillNeeded),
     })
   })
 
@@ -38,6 +43,11 @@ function parsePrice(priceContainer: cheerio.Cheerio<cheerio.Element>) {
   const cents = priceContainer.find('sup').eq(1).text()
 
   return parseFloat(`${dollars}.${cents}`)
+}
+
+function parseStillNeeded(stillNeededEl: cheerio.Cheerio<cheerio.Element>) {
+  const parts = stillNeededEl.text().trim().split(' ')
+  return parseInt(parts[0])
 }
 
 let page: puppeteer.Page
