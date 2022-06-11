@@ -10,6 +10,7 @@ type Product = {
   stillNeeded: number
   isMostWanted: boolean
   isOutOfStock: boolean
+  isPurchased: boolean
 }
 
 async function scrape(registryUrl: string) {
@@ -38,6 +39,7 @@ async function scrape(registryUrl: string) {
       stillNeeded: parseStillNeeded(stillNeeded),
       isMostWanted: isMostWanted(product),
       isOutOfStock: isOutOfStock(label),
+      isPurchased: isPurchased(label),
     })
   })
 
@@ -74,6 +76,10 @@ function isMostWanted(productEl: cheerio.Cheerio<cheerio.Element>) {
 
 function isOutOfStock(labelEl: cheerio.Cheerio<cheerio.Element>) {
   return labelEl.text().toLowerCase().includes('out of stock')
+}
+
+function isPurchased(labelEl: cheerio.Cheerio<cheerio.Element>) {
+  return labelEl.text().toLowerCase().includes('purchased')
 }
 
 let page: puppeteer.Page
