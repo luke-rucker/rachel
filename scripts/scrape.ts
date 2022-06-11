@@ -9,15 +9,17 @@ type Product = {
   priceInCents: number
   stillNeeded: number
   isMostWanted: boolean
+  isOutOfStock: boolean
 }
 
 async function scrape(registryUrl: string) {
   const html = await getRegistryHtml(registryUrl)
   const $ = cheerio.load(html)
+  const productElements = $('.gr-card.gr-guest-card.registry-asin-card')
 
   const scrapedProducts: Array<Partial<Product>> = []
 
-  $('.gr-card.gr-guest-card.registry-asin-card').each(function () {
+  productElements.each(function () {
     const product = $(this)
 
     const price = product.find('.wedding__text--price')
@@ -26,6 +28,7 @@ async function scrape(registryUrl: string) {
     const stillNeeded = product.find(
       '.wedding__text.wedding__text--sm.wedding__text--light.registry-asin-card__bottom-left-text'
     )
+    const label = product.find('.registry-asin-card__label')
 
     scrapedProducts.push({
       name: link.attr('aria-label'),
@@ -34,6 +37,7 @@ async function scrape(registryUrl: string) {
       priceInCents: parsePrice(price),
       stillNeeded: parseStillNeeded(stillNeeded),
       isMostWanted: isMostWanted(product),
+      isOutOfStock: isOutOfStock(label),
     })
   })
 
@@ -60,12 +64,16 @@ function parseStillNeeded(stillNeededEl: cheerio.Cheerio<cheerio.Element>) {
   return parseInt(parts[0])
 }
 
-function isMostWanted(product: cheerio.Cheerio<cheerio.Element>) {
-  const flag = product.find('.registry-asin-card__flag')
+function isMostWanted(productEl: cheerio.Cheerio<cheerio.Element>) {
+  const flag = productEl.find('.registry-asin-card__flag')
   const flagIsShowing = !flag.hasClass('aok-hidden')
   const mostWantedTextExists = flag.has(":contains('Most Wanted')").length > 0
 
   return flagIsShowing && mostWantedTextExists
+}
+
+function isOutOfStock(labelEl: cheerio.Cheerio<cheerio.Element>) {
+  return labelEl.text().toLowerCase().includes('out of stock')
 }
 
 let page: puppeteer.Page
