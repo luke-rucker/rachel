@@ -79,7 +79,7 @@ async function getRegistryHtml(registryUrl: string) {
     return fs.readFileSync('samples/amazon.html')
   }
 
-  const browser = await puppeteer.launch({ headless: false, slowMo: 250 })
+  const browser = await puppeteer.launch()
   page = await browser.newPage()
   await page.goto(registryUrl)
 
