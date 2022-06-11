@@ -1,20 +1,46 @@
+import * as cheerio from 'cheerio'
+import * as fs from 'fs'
 import puppeteer from 'puppeteer'
+
+async function scrape(registryUrl: string) {
+  const html = await getRegistryHtml(registryUrl)
+  const $ = cheerio.load(html)
+
+  $('.gr-card.gr-guest-card.registry-asin-card').each(function () {
+    const product = $(this)
+
+    const image = product.find('img')
+    const link = product.find('a')
+
+    console.log('title:', link.attr('aria-label'))
+    console.log('href:', link.attr('href'))
+    console.log('image', image.attr('src'), '\n')
+  })
+}
 
 let page: puppeteer.Page
 
-async function scrape(registryUrl: string) {
-  const browser = await puppeteer.launch({ headless: false, slowMo: 250 })
+async function getRegistryHtml(registryUrl: string) {
+  if (fs.existsSync('amazon.html')) {
+    return fs.readFileSync('amazon.html')
+  }
+
+  const browser = await puppeteer.launch()
   page = await browser.newPage()
   await page.goto(registryUrl)
 
   await loadAllRegistryItems()
-  await scrollToBottom()
 
-  await browser.close()
+  const html = await page.evaluate(() => document.body.innerHTML)
+
+  browser
+    .close()
+    .catch(error => console.log('could not shutdown browser:', error))
+
+  fs.writeFileSync('amazon.html', html)
+
+  return html
 }
-
-const scrollToBottom = () =>
-  page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
 
 async function loadAllRegistryItems() {
   let hasMoreItems = await page.evaluate(() =>
@@ -23,7 +49,7 @@ async function loadAllRegistryItems() {
 
   while (hasMoreItems) {
     await page.evaluate(() =>
-      document.querySelector('.wedding__pagination > a')?.scrollIntoView()
+      document.querySelector('.wedding__pagination > a')?.scrollIntoView(false)
     )
     await page.click('.wedding__pagination > a')
     await page.waitForNetworkIdle()
