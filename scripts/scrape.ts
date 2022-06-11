@@ -2,20 +2,42 @@ import * as cheerio from 'cheerio'
 import * as fs from 'fs'
 import puppeteer from 'puppeteer'
 
+type Product = {
+  name: string
+  url: string
+  image: string
+  price: number
+}
+
 async function scrape(registryUrl: string) {
   const html = await getRegistryHtml(registryUrl)
   const $ = cheerio.load(html)
 
+  const scrapedProducts: Array<Partial<Product>> = []
+
   $('.gr-card.gr-guest-card.registry-asin-card').each(function () {
     const product = $(this)
 
-    const image = product.find('img')
+    const price = product.find('.wedding__text--price')
     const link = product.find('a')
+    const image = product.find('img')
 
-    console.log('title:', link.attr('aria-label'))
-    console.log('href:', link.attr('href'))
-    console.log('image', image.attr('src'), '\n')
+    scrapedProducts.push({
+      name: link.attr('aria-label'),
+      url: link.attr('href'),
+      image: image.attr('src'),
+      price: parsePrice(price),
+    })
   })
+
+  scrapedProducts.forEach(product => console.log(product))
+}
+
+function parsePrice(priceContainer: cheerio.Cheerio<cheerio.Element>) {
+  const dollars = priceContainer.find('span').text()
+  const cents = priceContainer.find('sup').eq(1).text()
+
+  return parseFloat(`${dollars}.${cents}`)
 }
 
 let page: puppeteer.Page
