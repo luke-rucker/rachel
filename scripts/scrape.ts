@@ -6,8 +6,9 @@ type Product = {
   name: string
   url: string
   image: string
-  price: number
+  priceInCents: number
   stillNeeded: number
+  isMostWanted: boolean
 }
 
 async function scrape(registryUrl: string) {
@@ -30,8 +31,9 @@ async function scrape(registryUrl: string) {
       name: link.attr('aria-label'),
       url: link.attr('href'),
       image: image.attr('src'),
-      price: parsePrice(price),
+      priceInCents: parsePrice(price),
       stillNeeded: parseStillNeeded(stillNeeded),
+      isMostWanted: isMostWanted(product),
     })
   })
 
@@ -39,15 +41,23 @@ async function scrape(registryUrl: string) {
 }
 
 function parsePrice(priceContainer: cheerio.Cheerio<cheerio.Element>) {
-  const dollars = priceContainer.find('span').text()
-  const cents = priceContainer.find('sup').eq(1).text()
+  const dollars = parseInt(priceContainer.find('span').text())
+  const cents = parseInt(priceContainer.find('sup').eq(1).text())
 
-  return parseFloat(`${dollars}.${cents}`)
+  return dollars * 100 + cents
 }
 
 function parseStillNeeded(stillNeededEl: cheerio.Cheerio<cheerio.Element>) {
   const parts = stillNeededEl.text().trim().split(' ')
   return parseInt(parts[0])
+}
+
+function isMostWanted(product: cheerio.Cheerio<cheerio.Element>) {
+  const flag = product.find('.registry-asin-card__flag')
+  const flagIsShowing = !flag.hasClass('aok-hidden')
+  const mostWantedTextExists = flag.has(":contains('Most Wanted')").length > 0
+
+  return flagIsShowing && mostWantedTextExists
 }
 
 let page: puppeteer.Page
