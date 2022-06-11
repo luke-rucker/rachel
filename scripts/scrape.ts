@@ -85,8 +85,8 @@ function isPurchased(labelEl: cheerio.Cheerio<cheerio.Element>) {
 let page: puppeteer.Page
 
 async function getRegistryHtml(registryUrl: string) {
-  if (fs.existsSync('amazon.html')) {
-    return fs.readFileSync('amazon.html')
+  if (fs.existsSync('samples/amazon.html')) {
+    return fs.readFileSync('samples/amazon.html')
   }
 
   const browser = await puppeteer.launch()
@@ -101,7 +101,7 @@ async function getRegistryHtml(registryUrl: string) {
     .close()
     .catch(error => console.log('could not shutdown browser:', error))
 
-  fs.writeFileSync('amazon.html', html)
+  fs.writeFileSync('samples/amazon.html', html)
 
   return html
 }
