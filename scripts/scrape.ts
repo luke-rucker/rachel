@@ -29,7 +29,7 @@ async function scrape(registryUrl: string) {
 
     scrapedProducts.push({
       name: link.attr('aria-label'),
-      url: link.attr('href'),
+      url: parseProductUrl(link),
       image: image.attr('src'),
       priceInCents: parsePrice(price),
       stillNeeded: parseStillNeeded(stillNeeded),
@@ -38,6 +38,14 @@ async function scrape(registryUrl: string) {
   })
 
   scrapedProducts.forEach(product => console.log(product))
+}
+
+function parseProductUrl(link: cheerio.Cheerio<cheerio.Element>) {
+  const hrefWithQuery = link.attr('href')
+  const hrefWithoutQuery = hrefWithQuery?.slice(0, hrefWithQuery?.indexOf('?'))
+
+  if (hrefWithoutQuery?.includes('javascript:')) return hrefWithQuery
+  else return `https://amazon.com${hrefWithoutQuery}`
 }
 
 function parsePrice(priceContainer: cheerio.Cheerio<cheerio.Element>) {
