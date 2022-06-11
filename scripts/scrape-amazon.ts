@@ -1,24 +1,14 @@
 import * as cheerio from 'cheerio'
 import * as fs from 'fs'
 import puppeteer from 'puppeteer'
-
-type Product = {
-  name: string
-  url: string
-  image: string
-  priceInCents: number
-  stillNeeded: number
-  isMostWanted: boolean
-  isOutOfStock: boolean
-  isPurchased: boolean
-}
+import type { ScrapedProduct } from '../types'
 
 async function scrape(registryUrl: string) {
   const html = await getRegistryHtml(registryUrl)
   const $ = cheerio.load(html)
   const productElements = $('.gr-card.gr-guest-card.registry-asin-card')
 
-  const scrapedProducts: Array<Partial<Product>> = []
+  const scrapedProducts: Array<Partial<ScrapedProduct>> = []
 
   productElements.each(function () {
     const product = $(this)
@@ -89,7 +79,7 @@ async function getRegistryHtml(registryUrl: string) {
     return fs.readFileSync('samples/amazon.html')
   }
 
-  const browser = await puppeteer.launch()
+  const browser = await puppeteer.launch({ headless: false, slowMo: 250 })
   page = await browser.newPage()
   await page.goto(registryUrl)
 

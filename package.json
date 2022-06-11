@@ -8,7 +8,8 @@
     "dev": "remix dev",
     "start": "remix-serve build",
     "prepare": "husky install",
-    "scrape": "ts-node scripts/scrape.ts"
+    "scrape:amazon": "ts-node scripts/scrape-amazon.ts",
+    "scrape:target": "ts-node scripts/scrape-target.ts"
   },
   "dependencies": {
     "@remix-run/node": "^1.5.1",
