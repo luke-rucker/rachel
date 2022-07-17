@@ -6,9 +6,15 @@ import type { ScrapedProduct } from '../types'
 async function scrape(registryUrl: string) {
   const html = await getRegistryHtml(registryUrl)
   const $ = cheerio.load(html)
-  const productElements = $('.gr-card.gr-guest-card.registry-asin-card')
+  const productElements = $('.styles__Card-sc-uu5e5x-0')
 
   const scrapedProducts: Array<Partial<ScrapedProduct>> = []
+
+  productElements.each(function () {
+    const product = $(this)
+
+    console.log(product)
+  })
 }
 
 async function getRegistryHtml(registryUrl: string) {
