@@ -7,3 +7,5 @@ node_modules
 .eslintcache
 
 samples/*.html
+prisma/data.db
+prisma/data.db-journal
