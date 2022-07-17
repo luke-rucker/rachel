@@ -4,8 +4,6 @@ import express from 'express'
 import morgan from 'morgan'
 import path from 'path'
 
-const here = (...d: Array<string>) => path.join(__dirname, ...d)
-
 const app = express()
 
 app.use(compression())
@@ -45,7 +43,6 @@ app.listen(port, () => {
   // we want the server to start accepting requests asap, so we wait until now
   // to preload the build
   require('../build')
-  console.log('hey now')
   console.log(`server listening on port ${port}`)
 })
 
