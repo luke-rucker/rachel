@@ -1,8 +1,9 @@
 import { createRequestHandler } from '@remix-run/express'
 import compression from 'compression'
 import express from 'express'
-import morgan from 'morgan'
 import path from 'path'
+import requestLogger from 'pino-http'
+import { logger } from './logger'
 
 const app = express()
 
@@ -18,7 +19,7 @@ app.use(
 )
 app.use(express.static('public', { maxAge: '1h' }))
 
-app.use(morgan('tiny'))
+app.use(requestLogger({ logger }))
 
 app.all(
   '*',
@@ -43,7 +44,7 @@ app.listen(port, () => {
   // we want the server to start accepting requests asap, so we wait until now
   // to preload the build
   require('../build')
-  console.log(`server listening on port ${port}`)
+  logger.info(`listening on port ${port}`)
 })
 
 ////////////////////////////////////////////////////////////////////////////////
