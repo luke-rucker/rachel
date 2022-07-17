@@ -1,0 +1,7 @@
+port: 3000
+
+cron:
+  scrapers:
+    interval: '*/1 * * * *' # every 1 min
+    amazon:
+      url: https://www.amazon.com/wedding/a/registry/29WZCNDL16O7W

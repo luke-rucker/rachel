@@ -1,3 +1,4 @@
+import config from 'config'
 import { logger } from '../logger'
 import { AmazonScraper } from '../scapers'
 
@@ -7,7 +8,7 @@ export async function scrapeAmazon() {
   jobLogger.info('start')
 
   const amazon = new AmazonScraper({
-    registryUrl: 'https://www.amazon.com/wedding/a/registry/29WZCNDL16O7W',
+    registryUrl: config.get('cron.scrapers.amazon.url'),
   })
   const products = await amazon.scrapeProducts()
 
