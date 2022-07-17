@@ -3,6 +3,7 @@ import compression from 'compression'
 import express from 'express'
 import path from 'path'
 import requestLogger from 'pino-http'
+import { scheduleCronJobs } from './cron'
 import { logger } from './logger'
 
 const app = express()
@@ -38,13 +39,15 @@ app.all(
       })
 )
 
+scheduleCronJobs()
+
 const port = process.env.PORT ?? 3000
 app.listen(port, () => {
   // preload the build so we're ready for the first request
   // we want the server to start accepting requests asap, so we wait until now
   // to preload the build
   require('../build')
-  logger.info(`listening on port ${port}`)
+  logger.info(`listening on port ${port}!`)
 })
 
 ////////////////////////////////////////////////////////////////////////////////
